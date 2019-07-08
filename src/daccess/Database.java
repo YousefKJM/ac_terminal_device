@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
  
 
 public class Database {
@@ -32,7 +33,7 @@ public class Database {
    
    public void prepareDatabase()
    {
-       execute("CREATE TABLE IF NOT EXISTS accounts (id integer PRIMARY KEY, Badge integer NOT NULL, FirstName VARCHAR(25), LastName VARCHAR(25), isAdmin Boolean, Approved Boolean, Password VARCHAR(25));");
+       execute("CREATE TABLE IF NOT EXISTS accounts (id integer PRIMARY KEY, Badge integer NOT NULL, FirstName VARCHAR(25), LastName VARCHAR(25), isAdmin Boolean, Approved Boolean, Password VARCHAR(25), Pending Boolean);");
        execute("CREATE TABLE IF NOT EXISTS accessLog (id integer PRIMARY KEY, accountId integer NOT NULL, time text);");
    }
    
@@ -40,10 +41,10 @@ public class Database {
    {
 	   if (accountExist(badge))
 		   return 1;
-	   execute("INSERT INTO accounts (Badge, FirstName, LastName, isAdmin, Approved, Password) " +
-			   				" VALUES (%s ,\"%s\" ,\"%s\", \"%s\", \"%s\", \"%s\");" ,
+	   execute("INSERT INTO accounts (Badge, FirstName, LastName, isAdmin, Approved, Password, Pending) " +
+			   				" VALUES (%s ,\"%s\" ,\"%s\", \"%s\", \"%s\", \"%s\", \"%s\");" ,
 			   				new String[] {
-			   				Integer.toString(badge), fname, lname, "0" , "0", password
+			   				Integer.toString(badge), fname, lname, "0" , "0", password, "0"
 			   				});
 	return 0;
    }
@@ -77,6 +78,73 @@ public class Database {
 	}
    }
    
+   /*public void changeApproval(int badge, boolean approval)
+   {
+   		execute("Update accounts Set approved=" + (approval ? 1 : 0) + " where badge=" + badge);
+   }
+
+   public void changeAdmin(int badge, boolean isAdmin)
+   {
+   		execute("Update accounts Set isAdmin=" + (isAdmin ? 1 : 0) + " where badge=" + badge);
+   }*/
+   
+   //	public Account(int id, int badge, String firstName, String lastName, boolean isApproved, boolean isAdmin, String password)
+   //       execute("CREATE TABLE IF NOT EXISTS accounts (id integer PRIMARY KEY, Badge integer NOT NULL, FirstName VARCHAR(25), LastName VARCHAR(25), isAdmin Boolean, Approved Boolean, Password VARCHAR(25));");
+
+   public Account getAccount(int badge)
+   {
+	   ResultSet r = executeQ("Select * From Accounts where badge = " + badge + " Limit 1;");
+	   try {
+		if (r.next())
+		{
+			return new Account(r.getInt("id") , r.getInt("Badge") , r.getString("FirstName") , r.getString("LastName") , r.getBoolean("Approved") , r.getBoolean("isAdmin"), r.getString("Password"), r.getBoolean("Pending"));
+		} else
+		{
+			return null;
+		}
+	} catch (SQLException e) {
+		e.printStackTrace();
+		return null;
+	}
+   }
+   
+   public ArrayList<Account> getAllAccounts()
+   {
+	   ArrayList<Account> accounts = new ArrayList<Account>();
+	   ResultSet r = executeQ("Select * From Accounts;");
+	   try {
+		while (r.next())
+		{
+			accounts.add( new Account(r.getInt("id") , r.getInt("Badge") , r.getString("FirstName") , r.getString("LastName") , r.getBoolean("Approved") , r.getBoolean("isAdmin"), r.getString("Password"), r.getBoolean("Pending")) );
+		}
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+	 return accounts;  
+   }
+   
+   public ArrayList<Account> getPendingAccounts()
+   {
+	   ArrayList<Account> accounts = new ArrayList<Account>();
+	   ResultSet r = executeQ("Select * From Accounts Where Pending=\"0\";");
+	   try {
+		while (r.next())
+		{
+			accounts.add( new Account(r.getInt("id") , r.getInt("Badge") , r.getString("FirstName") , r.getString("LastName") , r.getBoolean("Approved") , r.getBoolean("isAdmin"), r.getString("Password"), r.getBoolean("Pending")) );
+		}
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+	 return accounts;  
+   }
+   
+   public void updateAccount(Account acc)
+   {
+	   execute("Update Accounts Set FirstName=\"%s\", LastName=\"%s\", isAdmin=\"%s\", Approved=\"%s\", Password=\"%s\", Pending=\"%s\" where badge=%s" ,
+  				new String[] {
+  				acc.getFirstName(), acc.getLastName(), acc.isAdmin() ? "1" : "0", acc.isApproved()  ? "1" : "0", acc.getPassword(), acc.isPending() ? "1" : "0", Integer.toString(acc.getBadge())
+  				});
+   }
    
    
    public void execute(String qry)

@@ -1,12 +1,16 @@
 package daccess;
 
+import java.awt.EventQueue;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import daccess.gui.UserMngUI;
 
 public class Manager implements ActionMessageInterface {
 
 	BTChip bt;
 	Database db;
+	TerminalMgr terminal;
 	
 	public static void main(String[] args) {
 		new Manager();
@@ -16,6 +20,13 @@ public class Manager implements ActionMessageInterface {
 	{
 		bt = new BTChip(this);
 		db = new Database();
+		terminal = new TerminalMgr(); 
+		terminal.showMainUI();
+		Account ac = db.getAccount(758837);
+		ac.setAdmin(true);
+		ac.setApproved(true);
+		ac.setPending(true);
+		db.updateAccount(ac);
 	}
 
 	@Override
@@ -62,6 +73,8 @@ public class Manager implements ActionMessageInterface {
 		case "OPEND":
 			bt.sendCommand("OKCMD002");
 			break;
+		case "ADMPN":
+			terminal.showAdminView();
 		}
 	}
 }
