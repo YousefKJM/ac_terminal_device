@@ -18,6 +18,7 @@ import javax.swing.table.*;
  *  the model row number of the button that was clicked.
  *
  */
+@SuppressWarnings("serial")
 public class ButtonColumn extends AbstractCellEditor
 	implements TableCellRenderer, TableCellEditor, ActionListener, MouseListener
 {
@@ -50,8 +51,8 @@ public class ButtonColumn extends AbstractCellEditor
 		editButton = new JButton();
 		editButton.setFocusPainted( false );
 		editButton.addActionListener( this );
-		originalBorder = editButton.getBorder();
-		setFocusBorder( new LineBorder(Color.BLUE) );
+//		originalBorder = editButton.getBorder();
+//		setFocusBorder( new LineBorder(Color.BLUE) );
 
 		TableColumnModel columnModel = table.getColumnModel();
 		columnModel.getColumn(column).setCellRenderer( this );
@@ -143,6 +144,9 @@ public class ButtonColumn extends AbstractCellEditor
 		{
 			renderButton.setForeground(table.getForeground());
 			renderButton.setBackground(UIManager.getColor("Button.background"));
+			renderButton.setContentAreaFilled(false);
+			renderButton.setFocusPainted(false);
+			
 		}
 
 		if (hasFocus)
@@ -163,7 +167,7 @@ public class ButtonColumn extends AbstractCellEditor
 		else if (value instanceof Icon)
 		{
 			renderButton.setText( "" );
-			renderButton.setIcon( (Icon)value );
+			renderButton.setIcon((Icon)value);
 		}
 		else
 		{
@@ -217,6 +221,7 @@ public class ButtonColumn extends AbstractCellEditor
 
 		isButtonColumnEditor = false;
     }
+
 
     public void mouseClicked(MouseEvent e) {}
 	public void mouseEntered(MouseEvent e) {}

@@ -19,7 +19,7 @@
 	<classpathentry kind="lib" path="/home/pi/AccessControl/DoorAccess/lib/pi4j-gpio-extension-sources.jar"/>
 	<classpathentry kind="lib" path="/home/pi/AccessControl/DoorAccess/lib/synthetica.jar"/>
 	<classpathentry kind="lib" path="/home/pi/AccessControl/DoorAccess/lib/syntheticaSimple2D.jar"/>
-	<classpathentry kind="lib" path="/home/pi/AccessControl/DoorAccess/lib/syntheticaDark.jar"/>
-	<classpathentry kind="lib" path="/home/pi/AccessControl/DoorAccess/lib/syntheticaBlackEye.jar"/>
+	<classpathentry kind="lib" path="/home/pi/AccessControl/DoorAccess/lib/syntheticaAluOxide.jar"/>
+	<classpathentry kind="lib" path="/home/pi/AccessControl/DoorAccess/lib/syntheticaBlueLight.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

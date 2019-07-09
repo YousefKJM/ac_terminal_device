@@ -20,13 +20,26 @@ public class Manager implements ActionMessageInterface {
 	{
 		bt = new BTChip(this);
 		db = new Database();
-		terminal = new TerminalMgr(); 
-		terminal.showMainUI();
+		terminal = new TerminalMgr(this); 
+		//terminal.showMainUI();
+		//terminal.showPengingMgmt(db.getPendingAccounts());
+		//terminal.showUsersMgmt(db.getAllAccounts());
+		terminal.showAdminView();
 		Account ac = db.getAccount(758837);
 		ac.setAdmin(true);
 		ac.setApproved(true);
 		ac.setPending(true);
 		db.updateAccount(ac);
+	}
+	
+	public void showPengingMgmt()
+	{
+		terminal.showPengingMgmt(db.getPendingAccounts());
+	}
+	
+	public void showUsersMgmt()
+	{
+		terminal.showUsersMgmt(db.getAllAccounts());
 	}
 
 	@Override

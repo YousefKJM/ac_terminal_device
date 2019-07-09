@@ -19,6 +19,21 @@ public class MainUI extends JFrame {
 	public static final int windowWidth = 800;
 	public static final int windowHight = 480;
 
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					MainUI window = new MainUI();
+					window.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
 	/**
 	 * Create the application.
@@ -46,7 +61,7 @@ public class MainUI extends JFrame {
 		
 		
 		
-		JLabel lblImage = new JLabel(new ImageIcon(Toolkit.getDefaultToolkit().getImage(MainUI.class.getResource("/daccess/gui/src/img/logo.png"))));
+		JLabel lblImage = new JLabel(new ImageIcon(Toolkit.getDefaultToolkit().getImage(MainUI.class.getResource("/src/img/logo.png"))));
 		lblImage.setBounds(76, 89, 187, 211);
 		getContentPane().add(lblImage);
 		
@@ -70,7 +85,7 @@ public class MainUI extends JFrame {
 		lblScanLabel.setBounds(361, 53, 350, 101);
 		getContentPane().add(lblScanLabel);
 		
-		JLabel lblQR = new JLabel(new ImageIcon(Toolkit.getDefaultToolkit().getImage(MainUI.class.getResource("/daccess/gui/src/img/QR_d.png"))));
+		JLabel lblQR = new JLabel(new ImageIcon(Toolkit.getDefaultToolkit().getImage(MainUI.class.getResource("/src/img/QR_d.png"))));
 		lblQR.setBounds(444, 147, 187, 211);
 		getContentPane().add(lblQR);
 	}

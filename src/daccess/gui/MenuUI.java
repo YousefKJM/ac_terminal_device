@@ -3,9 +3,15 @@ import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.JButton;
+
+import daccess.Manager;
+import daccess.TerminalMgr;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
@@ -16,8 +22,14 @@ public class MenuUI extends JFrame {
 
 	public static final int windowWidth = 800;
 	public static final int windowHight = 480;
+	ImageIcon approval = new ImageIcon(ApprovalUI.class.getResource("/daccess/gui/src/img/approved.png"));
+	ImageIcon management = new ImageIcon(ApprovalUI.class.getResource("/daccess/gui/src/img/management.png")); 
 
-	public MenuUI() {
+	/**
+	 * Create the frame.
+	 */
+	Manager t;
+	public MenuUI(Manager t) {
 		getContentPane().setBackground(Color.WHITE);
 		getContentPane().setLayout(null);
 		setBounds(100, 100, 800, 480);
@@ -30,31 +42,43 @@ public class MenuUI extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JButton btnPendingApprovals = new JButton("Pending Approvals");
-		btnPendingApprovals.setFont(new Font("Berlin Sans FB", Font.PLAIN, 30));
+		btnPendingApprovals.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnPendingApprovals.setIcon(approval);
+		btnPendingApprovals.setHorizontalTextPosition(SwingConstants.CENTER);
+		
+		
+		btnPendingApprovals.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		btnPendingApprovals.setContentAreaFilled(false);
 		btnPendingApprovals.setFocusPainted(false);
 		btnPendingApprovals.setBorder(new LineBorder(Color.BLACK));
+		final Manager tm = t;
 		btnPendingApprovals.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				tm.showPengingMgmt();
 			}
 		});
-		btnPendingApprovals.setBounds(194, 87, 404, 126);
+		btnPendingApprovals.setBounds(105, 87, 273, 301);
+		btnPendingApprovals.setIconTextGap(22);
 		getContentPane().add(btnPendingApprovals);
 		
 		
 		
 		
 		JButton btnUserManagement = new JButton("User Management");
-		btnUserManagement.setFont(new Font("Berlin Sans FB", Font.PLAIN, 30));
-//		btnUserManagement.setContentAreaFilled(false);
-//		btnUserManagement.setFocusPainted(false);
+		btnUserManagement.setIcon(management);
+		btnUserManagement.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnUserManagement.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnUserManagement.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		btnUserManagement.setContentAreaFilled(false);
+		btnUserManagement.setFocusPainted(false);
 		btnUserManagement.setBorder(new LineBorder(Color.BLACK));
 		btnUserManagement.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				tm.showUsersMgmt();
 			}
 		});
-		btnUserManagement.setBounds(194, 262, 404, 126);
+		btnUserManagement.setBounds(428, 87, 273, 301);
+		btnUserManagement.setIconTextGap(10);
 		getContentPane().add(btnUserManagement);
 		
 		

@@ -111,7 +111,7 @@ public class Database {
    public ArrayList<Account> getAllAccounts()
    {
 	   ArrayList<Account> accounts = new ArrayList<Account>();
-	   ResultSet r = executeQ("Select * From Accounts;");
+	   ResultSet r = executeQ("Select * From Accounts Where Pending=1;");
 	   try {
 		while (r.next())
 		{
