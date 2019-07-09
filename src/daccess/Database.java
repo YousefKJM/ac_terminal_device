@@ -123,6 +123,28 @@ public class Database {
 	 return accounts;  
    }
    
+   public void approveAccount(int badge, boolean isApproved)
+   {
+	   Account ac = this.getAccount(badge);
+	   ac.setApproved(isApproved);
+	   ac.setPending(true);
+	   this.updateAccount(ac);
+   }
+   
+   public void setAdmin(int badge, boolean isAdmin)
+   {
+	   Account ac = this.getAccount(badge);
+	   ac.setAdmin(isAdmin);
+	   this.updateAccount(ac);
+   }
+   
+   public void setApproved(int badge, boolean isApproved)
+   {
+	   Account ac = this.getAccount(badge);
+	   ac.setApproved(isApproved);
+	   this.updateAccount(ac);
+   }
+   
    public ArrayList<Account> getPendingAccounts()
    {
 	   ArrayList<Account> accounts = new ArrayList<Account>();

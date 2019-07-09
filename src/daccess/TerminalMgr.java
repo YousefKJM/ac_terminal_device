@@ -23,8 +23,8 @@ public class TerminalMgr {
 			act[0] = accounts.get(i).getBadge();
 			act[1] = accounts.get(i).getFirstName();
 			act[2] = accounts.get(i).getLastName();
-			act[3] = accounts.get(i).isApproved();
-			act[4] = accounts.get(i).isAdmin();
+			act[3] = accounts.get(i).isAdmin();
+			act[4] = accounts.get(i).isApproved();
 			acts[i] = act;
 		}
 		EventQueue.invokeLater(new Runnable() {
@@ -33,7 +33,7 @@ public class TerminalMgr {
 //					javax.swing.UIManager.setLookAndFeel("de.javasoft.plaf.synthetica.SyntheticaSimple2DLookAndFeel");
 					javax.swing.UIManager.setLookAndFeel("de.javasoft.plaf.synthetica.SyntheticaAluOxideLookAndFeel");
 //					javax.swing.UIManager.setLookAndFeel("de.javasoft.plaf.synthetica.SyntheticaBlueLightLookAndFeel");
-					UserMngUI frame = new UserMngUI(acts);
+					UserMngUI frame = new UserMngUI(acts, t.db);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -61,7 +61,7 @@ public class TerminalMgr {
 			public void run() {
 				try {
 					javax.swing.UIManager.setLookAndFeel("de.javasoft.plaf.synthetica.SyntheticaAluOxideLookAndFeel");
-					ApprovalUI frame = new ApprovalUI(acts);
+					ApprovalUI frame = new ApprovalUI(acts, t.db);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

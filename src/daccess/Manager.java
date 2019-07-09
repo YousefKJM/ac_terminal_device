@@ -18,18 +18,10 @@ public class Manager implements ActionMessageInterface {
 	
 	public Manager()
 	{
-		bt = new BTChip(this);
-		db = new Database();
 		terminal = new TerminalMgr(this); 
 		terminal.showMainUI();
-		//terminal.showPengingMgmt(db.getPendingAccounts());
-		//terminal.showUsersMgmt(db.getAllAccounts());
-		terminal.showAdminView();
-		Account ac = db.getAccount(758837);
-		ac.setAdmin(true);
-		ac.setApproved(true);
-		ac.setPending(true);
-		db.updateAccount(ac);
+		bt = new BTChip(this);
+		db = new Database();
 	}
 	
 	public void showPengingMgmt()
@@ -84,10 +76,27 @@ public class Manager implements ActionMessageInterface {
 			}
 			break;
 		case "OPEND":
-			bt.sendCommand("OKCMD002");
+			Account ac = db.getAccount(Integer.parseInt(prm[0]));
+			if (!ac.isPending())
+			{
+				bt.sendCommand("ERROR902");	
+			} else if (!ac.isApproved()) {
+				bt.sendCommand("ERROR903");
+			} else
+				bt.sendCommand("OKCMD002");
 			break;
 		case "ADMPN":
-			terminal.showAdminView();
+			Account ac2 = db.getAccount(Integer.parseInt(prm[0]));
+			if (ac2.isAdmin() && ac2.isPending())
+			{
+				terminal.showAdminView();
+				bt.sendCommand("OKADM");
+			}
+			else
+				{
+				bt.sendCommand("FLGOT");
+				}
+			break;		
 		}
 	}
 }

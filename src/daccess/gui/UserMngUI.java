@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.table.*;
 
+import daccess.Database;
+
 @SuppressWarnings("serial")
 public class UserMngUI extends JFrame {
 
@@ -18,9 +20,10 @@ public class UserMngUI extends JFrame {
 	 */
 	
 	Object[][] data;
-	
-	public UserMngUI(Object[][] data) {
+	Database db;
+	public UserMngUI(Object[][] data, Database db) {
 		this.data = data;
+		this.db = db;
 		getContentPane().setBackground(Color.WHITE);
 		getContentPane().setLayout(null);
 		setBounds(0, -22, 800, 502);
@@ -89,29 +92,17 @@ public class UserMngUI extends JFrame {
 	                        return Boolean.class;
 	                }
 	            }
+        	 final Database dbs = db;
         	 public void setValueAt(Object value, int row, int col) {
         		    super.setValueAt(value, row, col);
         		    if (col == 3) {
-        		        if ((Boolean) this.getValueAt(row, col) == true) {
-        		            //code goes here
-    	                    System.out.println("col 3, row " + row +": " + true);
-                            
-        		        }
-        		        else if ((Boolean) this.getValueAt(row, col) == false) {
-        		            //code goes here
-    	                    System.out.println("col 3, row " + row +": " + false);
-        		        }
+        		        int badge =  ((int) this.getValueAt(row, 0));
+        		        dbs.setAdmin(badge, (Boolean) this.getValueAt(row, col));
         		    }
         		    
         		    if (col == 4) {
-        		        if ((Boolean) this.getValueAt(row, col) == true) {
-        		            //code goes here
-    	                    System.out.println("col 4, row " + row +": " + true);
-        		        }
-        		        else if ((Boolean) this.getValueAt(row, col) == false) {
-        		            //code goes here
-    	                    System.out.println("col 4, row " + row +": " + false);
-        		        }
+        		        int badge =  ((int) this.getValueAt(row, 0));
+        		        dbs.setApproved(badge, (Boolean) this.getValueAt(row, col));
         		    }
         	}
 

@@ -5,6 +5,8 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.*;
 
+import daccess.Database;
+
 
 
 @SuppressWarnings("serial")
@@ -12,8 +14,10 @@ public class ApprovalUI extends JFrame {
 
 	
 	Object[][] data;
-	public ApprovalUI(Object[][] d) {
+	Database db;
+	public ApprovalUI(Object[][] d, Database db) {
 		data = d;
+		this.db = db;
 		getContentPane().setBackground(Color.WHITE);
 		getContentPane().setLayout(null);
 		setBounds(0, -22, 800, 502);
@@ -41,15 +45,16 @@ public class ApprovalUI extends JFrame {
 		getContentPane().add(scrollPane);
 		
 
-		
+		final Database dbs = db;
 		Action approve = new AbstractAction()
 		{
 		    public void actionPerformed(ActionEvent e)
 		    {
-//		        JTable table = (JTable)e.getSource();
+		        JTable table = (JTable)e.getSource();
 		        int modelRow = Integer.valueOf( e.getActionCommand() );
-//		        ((DefaultTableModel)table.getModel()).removeRow(modelRow);
-		        System.out.println("Approve --> Row: " + modelRow + " clicked!");
+		        int badge = (int) ((DefaultTableModel)table.getModel()).getValueAt(modelRow, 0);
+		        ((DefaultTableModel)table.getModel()).removeRow(modelRow);
+		        dbs.approveAccount(badge, true);
 		    }
 		};
 
@@ -63,10 +68,11 @@ public class ApprovalUI extends JFrame {
 		{
 		    public void actionPerformed(ActionEvent e)
 		    {
-//		        JTable table = (JTable)e.getSource();
+		        JTable table = (JTable)e.getSource();
 		        int modelRow = Integer.valueOf( e.getActionCommand() );
-//		        ((DefaultTableModel)table.getModel()).removeRow(modelRow);
-		        System.out.println("Reject --> Row:" + modelRow + " clicked!");
+		        int badge = (int) ((DefaultTableModel)table.getModel()).getValueAt(modelRow, 0);
+		        ((DefaultTableModel)table.getModel()).removeRow(modelRow);
+		        dbs.approveAccount(badge, false);
 
 		    }
 		};
