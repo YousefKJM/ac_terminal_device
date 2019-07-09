@@ -10,28 +10,20 @@ import javax.swing.table.*;
 @SuppressWarnings("serial")
 public class ApprovalUI extends JFrame {
 
-	public static final int windowWidth = 800;
-	public static final int windowHight = 480;
-
-
-
-	/**
-	 * Create the frame.
-	 */
 	
 	Object[][] data;
 	public ApprovalUI(Object[][] d) {
 		data = d;
 		getContentPane().setBackground(Color.WHITE);
 		getContentPane().setLayout(null);
-		setBounds(0, -22, 800, 480);
-		setSize(windowWidth, windowHight);
+		setBounds(0, -22, 800, 502);
+		//setSize(windowWidth, windowHight);
 //		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
 		
 		JLabel lblPendingApprovals = new JLabel("Pending Approvals");
 		lblPendingApprovals.setHorizontalAlignment(SwingConstants.CENTER);
-		lblPendingApprovals.setFont(new Font("Tahoma", Font.BOLD, 30));
+		lblPendingApprovals.setFont(new Font("Tahoma", Font.BOLD, 22));
 		lblPendingApprovals.setBounds(95, 7, 625, 54);
 		getContentPane().add(lblPendingApprovals);
 		
@@ -81,15 +73,25 @@ public class ApprovalUI extends JFrame {
 		ButtonColumn buttonColumnB = new ButtonColumn(table, reject, 4);
 		buttonColumnB.setMnemonic(KeyEvent.VK_D);
 		
-		
-
+		final ApprovalUI prnt = this;
+		JButton btnBack = new JButton();
+		btnBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				prnt.dispose();
+			}
+		});
+		btnBack.setBounds(10, 15, 64, 40);
+		btnBack.setContentAreaFilled(false);
+		btnBack.setFocusPainted(false);
+		btnBack.setIcon(new ImageIcon(ApprovalUI.class.getResource("/daccess/gui/src/img/back-arrow_32.png")));
+		getContentPane().add(btnBack);
 		
 
 	
-		setResizable(false);
+		setResizable(true);
 		getRootPane().setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
 		setUndecorated(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 	
 	 private JTable createTable() {
@@ -125,8 +127,8 @@ public class ApprovalUI extends JFrame {
 	        table.setShowVerticalLines(false);
 	        table.setShowHorizontalLines(false);
 	        table.setRowHeight(50);
-	        table.setFont(new Font("Arial", Font.PLAIN, 20));
-	        table.getTableHeader().setFont(new Font("SansSerif", Font.PLAIN, 22));
+	        table.setFont(new Font("Arial", Font.PLAIN, 16));
+	        table.getTableHeader().setFont(new Font("SansSerif", Font.PLAIN, 16));
 	        ((DefaultTableCellRenderer)table.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
 	        table.getTableHeader().setBackground(Color.WHITE);
 //	        table.setBackground(Color.WHITE);

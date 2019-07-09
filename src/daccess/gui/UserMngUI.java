@@ -1,13 +1,14 @@
 package daccess.gui;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
 import javax.swing.table.*;
 
 @SuppressWarnings("serial")
 public class UserMngUI extends JFrame {
 
-	public static final int windowWidth = 800;
-	public static final int windowHight = 480;
 	
     @SuppressWarnings("unused")
 	private static final int BOOLEAN_COLUMN = 2;
@@ -22,14 +23,13 @@ public class UserMngUI extends JFrame {
 		this.data = data;
 		getContentPane().setBackground(Color.WHITE);
 		getContentPane().setLayout(null);
-		setBounds(100, 100, 800, 480);
-		setSize(windowWidth, windowHight);
+		setBounds(0, -22, 800, 502);
 //		setLocationRelativeTo(null);
 		getContentPane().setLayout(null);
 		
 		JLabel lblUserMng = new JLabel("User Management");
 		lblUserMng.setHorizontalAlignment(SwingConstants.CENTER);
-		lblUserMng.setFont(new Font("Tahoma", Font.BOLD, 30));
+		lblUserMng.setFont(new Font("Tahoma", Font.BOLD, 22));
 		lblUserMng.setBounds(95, 7, 625, 54);
 		getContentPane().add(lblUserMng);
 		
@@ -42,6 +42,19 @@ public class UserMngUI extends JFrame {
 		JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setBounds(10, 73, 779, 378);
 		getContentPane().add(scrollPane);
+		
+		JButton btnBack = new JButton();
+		final UserMngUI prnt = this;
+		btnBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				prnt.dispose();
+			}
+		});
+		btnBack.setBounds(10, 15, 64, 40);
+		btnBack.setContentAreaFilled(false);
+		btnBack.setFocusPainted(false);
+		btnBack.setIcon(new ImageIcon(UserMngUI.class.getResource("/daccess/gui/src/img/back-arrow_32.png")));
+		getContentPane().add(btnBack);
 		
 		
 		setResizable(false);
@@ -110,8 +123,8 @@ public class UserMngUI extends JFrame {
         table.setShowVerticalLines(false);
         table.setShowHorizontalLines(false);
         table.setRowHeight(50);
-        table.setFont(new Font("Arial", Font.PLAIN, 20));
-        table.getTableHeader().setFont(new Font("SansSerif", Font.PLAIN, 22));
+        table.setFont(new Font("Arial", Font.PLAIN, 16));
+        table.getTableHeader().setFont(new Font("SansSerif", Font.PLAIN, 16));
         ((DefaultTableCellRenderer)table.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
         table.getTableHeader().setBackground(Color.WHITE);
 //        table.setBackground(Color.WHITE);

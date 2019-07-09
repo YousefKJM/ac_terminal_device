@@ -21,7 +21,7 @@ public class Manager implements ActionMessageInterface {
 		bt = new BTChip(this);
 		db = new Database();
 		terminal = new TerminalMgr(this); 
-		//terminal.showMainUI();
+		terminal.showMainUI();
 		//terminal.showPengingMgmt(db.getPendingAccounts());
 		//terminal.showUsersMgmt(db.getAllAccounts());
 		terminal.showAdminView();

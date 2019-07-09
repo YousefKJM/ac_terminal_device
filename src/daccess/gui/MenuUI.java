@@ -1,6 +1,5 @@
 package daccess.gui;
 import java.awt.Color;
-import java.awt.EventQueue;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -10,7 +9,6 @@ import javax.swing.border.LineBorder;
 import javax.swing.JButton;
 
 import daccess.Manager;
-import daccess.TerminalMgr;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -20,8 +18,6 @@ import java.awt.Font;
 @SuppressWarnings("serial")
 public class MenuUI extends JFrame {
 
-	public static final int windowWidth = 800;
-	public static final int windowHight = 480;
 	ImageIcon approval = new ImageIcon(ApprovalUI.class.getResource("/daccess/gui/src/img/approved.png"));
 	ImageIcon management = new ImageIcon(ApprovalUI.class.getResource("/daccess/gui/src/img/management.png")); 
 
@@ -32,14 +28,11 @@ public class MenuUI extends JFrame {
 	public MenuUI(Manager t) {
 		getContentPane().setBackground(Color.WHITE);
 		getContentPane().setLayout(null);
-		setBounds(100, 100, 800, 480);
-		setSize(windowWidth, windowHight);
-		setLocationRelativeTo(null);
-		getContentPane().setLayout(null);
+		setBounds(0, -22, 800, 502);
 		setResizable(false);
 		getRootPane().setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
 		setUndecorated(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		JButton btnPendingApprovals = new JButton("Pending Approvals");
 		btnPendingApprovals.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -81,6 +74,18 @@ public class MenuUI extends JFrame {
 		btnUserManagement.setIconTextGap(10);
 		getContentPane().add(btnUserManagement);
 		
+		JButton btnBack = new JButton();
+		final MenuUI prnt = this;
+		btnBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				prnt.dispose();
+			}
+		});
+		btnBack.setBounds(10, 15, 64, 40);
+		btnBack.setContentAreaFilled(false);
+		btnBack.setFocusPainted(false);
+		btnBack.setIcon(new ImageIcon(UserMngUI.class.getResource("/daccess/gui/src/img/back-arrow_32.png")));
+		getContentPane().add(btnBack);
 		
 
 	}

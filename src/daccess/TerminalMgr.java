@@ -89,6 +89,7 @@ public class TerminalMgr {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					javax.swing.UIManager.setLookAndFeel("de.javasoft.plaf.synthetica.SyntheticaAluOxideLookAndFeel");
 					MenuUI frame = new MenuUI(t);
 					frame.setVisible(true);
 				} catch (Exception e) {
