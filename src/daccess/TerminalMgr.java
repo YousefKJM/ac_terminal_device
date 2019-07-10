@@ -70,18 +70,30 @@ public class TerminalMgr {
 		});
 	}
 	
+	MainUI mainWindow;
 	public void showMainUI()
 	{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MainUI window = new MainUI();
-					window.setVisible(true);
+					mainWindow = new MainUI();
+					mainWindow.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
+	}
+	
+	public void setMainToBasic()
+	{
+		mainWindow.showMainGUI();
+	}
+
+	public void setMainToSub(String msg, String sub)
+	{
+		mainWindow.showMessage(msg, sub);
+		mainWindow.showSubGUI();
 	}
 	
 	public void showAdminView()

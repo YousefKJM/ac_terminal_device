@@ -33,7 +33,7 @@ public class Database {
    
    public void prepareDatabase()
    {
-       execute("CREATE TABLE IF NOT EXISTS accounts (id integer PRIMARY KEY, Badge integer NOT NULL, FirstName VARCHAR(25), LastName VARCHAR(25), isAdmin Boolean, Approved Boolean, Password VARCHAR(25), Pending Boolean);");
+       execute("CREATE TABLE IF NOT EXISTS accounts (id integer PRIMARY KEY, Badge integer NOT NULL, FirstName VARCHAR(25), LastName VARCHAR(25), isAdmin Boolean, Approved Boolean, Password VARCHAR(25), Pending Boolean, NFC VARCHAR(30));");
        execute("CREATE TABLE IF NOT EXISTS accessLog (id integer PRIMARY KEY, accountId integer NOT NULL, time text);");
    }
    
@@ -41,10 +41,10 @@ public class Database {
    {
 	   if (accountExist(badge))
 		   return 1;
-	   execute("INSERT INTO accounts (Badge, FirstName, LastName, isAdmin, Approved, Password, Pending) " +
-			   				" VALUES (%s ,\"%s\" ,\"%s\", \"%s\", \"%s\", \"%s\", \"%s\");" ,
+	   execute("INSERT INTO accounts (Badge, FirstName, LastName, isAdmin, Approved, Password, Pending, NFC) " +
+			   				" VALUES (%s ,\"%s\" ,\"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\");" ,
 			   				new String[] {
-			   				Integer.toString(badge), fname, lname, "0" , "0", password, "0"
+			   				Integer.toString(badge), fname, lname, "0" , "0", password, "0", ""
 			   				});
 	return 0;
    }
@@ -97,7 +97,24 @@ public class Database {
 	   try {
 		if (r.next())
 		{
-			return new Account(r.getInt("id") , r.getInt("Badge") , r.getString("FirstName") , r.getString("LastName") , r.getBoolean("Approved") , r.getBoolean("isAdmin"), r.getString("Password"), r.getBoolean("Pending"));
+			return new Account(r.getInt("id") , r.getInt("Badge") , r.getString("FirstName") , r.getString("LastName") , r.getBoolean("Approved") , r.getBoolean("isAdmin"), r.getString("Password"), r.getBoolean("Pending"), r.getString("NFC"));
+		} else
+		{
+			return null;
+		}
+	} catch (SQLException e) {
+		e.printStackTrace();
+		return null;
+	}
+   }
+
+   public Account getAccount(String NFC)
+   {
+	   ResultSet r = executeQ("Select * From Accounts where NFC = \"" + NFC + "\" Limit 1;");
+	   try {
+		if (r.next())
+		{
+			return new Account(r.getInt("id") , r.getInt("Badge") , r.getString("FirstName") , r.getString("LastName") , r.getBoolean("Approved") , r.getBoolean("isAdmin"), r.getString("Password"), r.getBoolean("Pending"), r.getString("NFC"));
 		} else
 		{
 			return null;
@@ -115,7 +132,7 @@ public class Database {
 	   try {
 		while (r.next())
 		{
-			accounts.add( new Account(r.getInt("id") , r.getInt("Badge") , r.getString("FirstName") , r.getString("LastName") , r.getBoolean("Approved") , r.getBoolean("isAdmin"), r.getString("Password"), r.getBoolean("Pending")) );
+			accounts.add( new Account(r.getInt("id") , r.getInt("Badge") , r.getString("FirstName") , r.getString("LastName") , r.getBoolean("Approved") , r.getBoolean("isAdmin"), r.getString("Password"), r.getBoolean("Pending"),r.getString("NFC")) );
 		}
 	} catch (SQLException e) {
 		e.printStackTrace();
@@ -152,7 +169,7 @@ public class Database {
 	   try {
 		while (r.next())
 		{
-			accounts.add( new Account(r.getInt("id") , r.getInt("Badge") , r.getString("FirstName") , r.getString("LastName") , r.getBoolean("Approved") , r.getBoolean("isAdmin"), r.getString("Password"), r.getBoolean("Pending")) );
+			accounts.add( new Account(r.getInt("id") , r.getInt("Badge") , r.getString("FirstName") , r.getString("LastName") , r.getBoolean("Approved") , r.getBoolean("isAdmin"), r.getString("Password"), r.getBoolean("Pending"),r.getString("NFC")) );
 		}
 	} catch (SQLException e) {
 		e.printStackTrace();
@@ -162,9 +179,9 @@ public class Database {
    
    public void updateAccount(Account acc)
    {
-	   execute("Update Accounts Set FirstName=\"%s\", LastName=\"%s\", isAdmin=\"%s\", Approved=\"%s\", Password=\"%s\", Pending=\"%s\" where badge=%s" ,
+	   execute("Update Accounts Set FirstName=\"%s\", LastName=\"%s\", isAdmin=\"%s\", Approved=\"%s\", Password=\"%s\", Pending=\"%s\", NFC=\"%s\" where badge=%s" ,
   				new String[] {
-  				acc.getFirstName(), acc.getLastName(), acc.isAdmin() ? "1" : "0", acc.isApproved()  ? "1" : "0", acc.getPassword(), acc.isPending() ? "1" : "0", Integer.toString(acc.getBadge())
+  				acc.getFirstName(), acc.getLastName(), acc.isAdmin() ? "1" : "0", acc.isApproved()  ? "1" : "0", acc.getPassword(), acc.isPending() ? "1" : "0", acc.getNFC(), Integer.toString(acc.getBadge())
   				});
    }
    

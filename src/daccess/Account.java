@@ -11,6 +11,7 @@ public class Account {
 	private boolean isApproved;
 	private boolean isAdmin;
 	private String password;
+	private String NFC;
 
 	
 	@Override
@@ -51,7 +52,7 @@ public class Account {
 		this.isAdmin = isAdmin;
 	}
 	
-	public Account(int id, int badge, String firstName, String lastName, boolean isApproved, boolean isAdmin, String password, boolean isPending)
+	public Account(int id, int badge, String firstName, String lastName, boolean isApproved, boolean isAdmin, String password, boolean isPending, String NFC)
 	{
 		this.id = id;
 		this.badge = badge;
@@ -61,6 +62,7 @@ public class Account {
 		this.isAdmin = isAdmin;
 		this.password = password;
 		this.pending = isPending;
+		this.NFC = NFC;
 	}
 	
 	public int getId() {
@@ -89,6 +91,14 @@ public class Account {
 	
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+
+	public String getNFC() {
+		return NFC;
+	}
+
+	public void setNFC(String nFC) {
+		NFC = nFC;
 	}
 
 }

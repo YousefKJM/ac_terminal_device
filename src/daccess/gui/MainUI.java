@@ -1,11 +1,14 @@
 package daccess.gui;
 import java.awt.BorderLayout;
+import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.SwingConstants;
+
 import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
@@ -20,52 +23,56 @@ public class MainUI extends JFrame {
 	public MainUI() {
 		initialize();
 	}
+	
+	JLabel lMain = new JLabel(new ImageIcon(MainUI.class.getResource("/daccess/gui/src/img/Main.jpg")));
+	JLabel lSub = new JLabel(new ImageIcon(MainUI.class.getResource("/daccess/gui/src/img/msg.jpg")));
+	JLabel lHeader = new JLabel("", SwingConstants.CENTER);
+	JLabel lHeader2 = new JLabel("", SwingConstants.CENTER);
+	
+	public void showMainGUI()
+	{
+		lMain.setVisible(true);
+		lSub.setVisible(false);
+	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
+	public void showSubGUI()
+	{
+		lMain.setVisible(false);
+		lSub.setVisible(true);
+	}
+	
+	public void showMessage(String header, String sub)
+	{
+		lHeader.setText(header);
+		if (sub == null)
+		{
+			lHeader.setBounds(0, 200, 800, 35);
+			lHeader2.setText("");
+			lHeader.setFont(new Font("Liberation Serif" , Font.PLAIN , 30));
+		} else
+		{
+			lHeader.setBounds(0, 100, 800, 40);
+			lHeader2.setBounds(0, 200, 800, 35);
+			lHeader2.setText(sub);
+			lHeader.setFont(new Font("Liberation Serif" , Font.PLAIN , 40));
+			lHeader2.setFont(new Font("Liberation Serif" , Font.PLAIN , 30));
+		}
+			showSubGUI();
+	}
+	
 	private void initialize() {
-		getContentPane().setLayout(new BorderLayout());
-		setContentPane(new JLabel(new ImageIcon(MainUI.class.getResource("/daccess/gui/src/img/Main.jpg"))));
-		
-
+		Container p = getContentPane();
+		p.setLayout(null);
+		p.add(lHeader);
+		p.add(lHeader2);
+		p.add(lMain);
+		p.add(lSub);
+		lMain.setBounds(0, 0, 800, 480);
+		lSub.setBounds(0, 0, 800, 480);
 		setBounds(0, 0, 800, 480);
-		getContentPane().setLayout(null);
 		setResizable(false);
 		getRootPane().setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		
-		
-		
-		
-//		
-//		JLabel lblImage = new JLabel(new ImageIcon(Toolkit.getDefaultToolkit().getImage(MainUI.class.getResource("/daccess/gui/src/img/logo.png"))));
-//		lblImage.setBounds(76, 89, 187, 211);
-//		getContentPane().add(lblImage);
-//		
-//		
-//		
-//		JButton btnExit = new JButton("Exit");
-////		btnExit.setBounds(94, 351, 500, 100);
-//		btnExit.setContentAreaFilled(false);
-//		btnExit.setFocusPainted(false);
-//		btnExit.setBorder(new LineBorder(Color.BLACK));
-//		btnExit.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				System.exit(0);
-//			}
-//		});
-//		btnExit.setBounds(99, 343, 141, 35);
-//		getContentPane().add(btnExit);
-//		
-//		JLabel lblScanLabel = new JLabel("Scan to download the app");
-//		lblScanLabel.setFont(new Font("Cooper Black", Font.PLAIN, 26));
-//		lblScanLabel.setBounds(361, 53, 350, 101);
-//		getContentPane().add(lblScanLabel);
-//		
-//		JLabel lblQR = new JLabel(new ImageIcon(Toolkit.getDefaultToolkit().getImage(MainUI.class.getResource("/daccess/gui/src/img/QR_d.png"))));
-//		lblQR.setBounds(444, 147, 187, 211);
-//		getContentPane().add(lblQR);
 	}
 }

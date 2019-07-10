@@ -44,6 +44,7 @@ public class ApprovalUI extends JFrame {
         scrollPane.setBounds(10, 73, 779, 378);
 		getContentPane().add(scrollPane);
 		
+//-------------------------------------------------------------------------------------
 
 		final Database dbs = db;
 		Action approve = new AbstractAction()
@@ -59,10 +60,8 @@ public class ApprovalUI extends JFrame {
 		};
 
 		ButtonColumn buttonColumnA = new ButtonColumn(table, approve, 3);
-		
 		buttonColumnA.setMnemonic(KeyEvent.VK_D);
 		
-//-------------------------------------------------------------------------------------
 		
 		Action reject = new AbstractAction()
 		{
@@ -78,7 +77,8 @@ public class ApprovalUI extends JFrame {
 		};
 		ButtonColumn buttonColumnB = new ButtonColumn(table, reject, 4);
 		buttonColumnB.setMnemonic(KeyEvent.VK_D);
-		
+//-------------------------------------------------------------------------------------
+	
 		final ApprovalUI prnt = this;
 		JButton btnBack = new JButton();
 		btnBack.addActionListener(new ActionListener() {
@@ -94,7 +94,7 @@ public class ApprovalUI extends JFrame {
 		
 
 	
-		setResizable(true);
+		setResizable(false);
 		getRootPane().setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -136,7 +136,7 @@ public class ApprovalUI extends JFrame {
 	        table.setFont(new Font("Arial", Font.PLAIN, 16));
 	        table.getTableHeader().setFont(new Font("SansSerif", Font.PLAIN, 16));
 	        ((DefaultTableCellRenderer)table.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
-	        table.getTableHeader().setBackground(Color.WHITE);
+//	        table.getTableHeader().setBackground(Color.WHITE);
 //	        table.setBackground(Color.WHITE);
 	        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 	        centerRenderer.setHorizontalAlignment( JLabel.CENTER );

@@ -11,6 +11,8 @@ public class Manager implements ActionMessageInterface {
 	BTChip bt;
 	Database db;
 	TerminalMgr terminal;
+
+	int mode = 0;
 	
 	public static void main(String[] args) {
 		new Manager();
@@ -20,8 +22,14 @@ public class Manager implements ActionMessageInterface {
 	{
 		terminal = new TerminalMgr(this); 
 		terminal.showMainUI();
-		bt = new BTChip(this);
 		db = new Database();
+		bt = new BTChip(this);
+		new NFC(this);
+//		Account ac =db.getAccount(758837);
+//		ac.setAdmin(true);
+//		ac.setApproved(true);
+//		ac.setPending(true);
+//		db.updateAccount(ac);
 	}
 	
 	public void showPengingMgmt()
@@ -32,6 +40,38 @@ public class Manager implements ActionMessageInterface {
 	public void showUsersMgmt()
 	{
 		terminal.showUsersMgmt(db.getAllAccounts());
+	}
+	
+	Account cardAccount = null;
+	public void cardRead(String id)
+	{
+		switch (mode)
+		{
+		case 0:
+			Account ac = db.getAccount(id);
+			if (ac != null)
+			{
+				approveLogin(ac);
+			}
+			break;
+		case 1:
+			cardAccount.setNFC(id);
+			db.updateAccount(cardAccount);
+			terminal.setMainToSub("Registration Completed", "Your account is now pending approval");
+			mode = 0;
+			break;
+		}
+	}
+	
+	public void approveLogin(int badge)
+	{
+		Account ac = db.getAccount(badge);
+		approveLogin(ac);
+	}
+
+	public void approveLogin(Account ac)
+	{
+		terminal.setMainToSub("Welcome!", ac.getFirstName() + " " + ac.getLastName());
 	}
 
 	@Override
@@ -50,6 +90,9 @@ public class Manager implements ActionMessageInterface {
 			{
 			case 0:
 				bt.sendCommand("OKCMD001");
+				mode = 1;
+				cardAccount = db.getAccount(badge);
+				terminal.setMainToSub("Please swipe your card", null);
 				break;
 			case 1:
 				bt.sendCommand("ERROR901");
@@ -63,7 +106,7 @@ public class Manager implements ActionMessageInterface {
 			{
 			case 0:
 				try {
-					bt.sendCommand(String.format("LOGOK%s^%s^%s^%s^", new String[] {Integer.toString(badgeNo) , r.getString("FirstName") , r.getString("LastName") , (r.getBoolean("isAdmin") ? "1" : "0")}));
+					bt.sendCommand(String.format("LOGOK%s^%s^%s^%s^", new String[] {Integer.toString(badgeNo), r.getString("FirstName") , r.getString("LastName") , (r.getBoolean("isAdmin") ? "1" : "0")}));
 				} catch (SQLException e) {
 				}
 				break;
@@ -83,7 +126,10 @@ public class Manager implements ActionMessageInterface {
 			} else if (!ac.isApproved()) {
 				bt.sendCommand("ERROR903");
 			} else
-				bt.sendCommand("OKCMD002");
+				{
+					bt.sendCommand("OKCMD002");
+					approveLogin(ac);
+				}
 			break;
 		case "ADMPN":
 			Account ac2 = db.getAccount(Integer.parseInt(prm[0]));
