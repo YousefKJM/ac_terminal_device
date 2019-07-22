@@ -33,15 +33,19 @@ public class MainUI extends JFrame {
 	{
 		lMain.setVisible(true);
 		lSub.setVisible(false);
+		lHeader.setVisible(false);
+		lHeader2.setVisible(false);
 	}
 
 	public void showSubGUI()
 	{
 		lMain.setVisible(false);
 		lSub.setVisible(true);
+		lHeader.setVisible(true);
+		lHeader2.setVisible(true);
 	}
 	
-	public void showMessage(String header, String sub)
+	public void showMessage(String header, String sub, Color cl)
 	{
 		lHeader.setText(header);
 		if (sub == null)
@@ -49,15 +53,24 @@ public class MainUI extends JFrame {
 			lHeader.setBounds(0, 200, 800, 35);
 			lHeader2.setText("");
 			lHeader.setFont(new Font("Liberation Serif" , Font.PLAIN , 30));
+			lHeader.setForeground(cl);
+			lHeader2.setForeground(cl);
 		} else
 		{
-			lHeader.setBounds(0, 100, 800, 40);
+			lHeader.setBounds(0, 100, 800, 45);
 			lHeader2.setBounds(0, 200, 800, 35);
 			lHeader2.setText(sub);
 			lHeader.setFont(new Font("Liberation Serif" , Font.PLAIN , 40));
 			lHeader2.setFont(new Font("Liberation Serif" , Font.PLAIN , 30));
+			lHeader.setForeground(cl);
+			lHeader2.setForeground(cl);
 		}
 			showSubGUI();
+	}
+	
+	public void showMessage(String header, String sub)
+	{
+		showMessage(header, sub, Color.black);
 	}
 	
 	private void initialize() {

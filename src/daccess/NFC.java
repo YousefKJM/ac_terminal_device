@@ -8,6 +8,7 @@ public class NFC {
 	Manager t;
 	public NFC(Manager t)
 	{
+		System.out.println("NFC Started");
 		this.t = t;
 		Thread th = new Thread() 
 		{
@@ -27,7 +28,7 @@ public class NFC {
 			{
 				System.out.println("Card read: " + cardID);
 				t.cardRead(cardID);
-				readSleep(2000);
+				readSleep(3000);
 			}
 			if (!connected)
 			{

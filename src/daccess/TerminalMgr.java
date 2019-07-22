@@ -1,5 +1,6 @@
 package daccess;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.util.ArrayList;
 
@@ -88,6 +89,12 @@ public class TerminalMgr {
 	public void setMainToBasic()
 	{
 		mainWindow.showMainGUI();
+	}
+
+	public void setMainToSub(String msg, String sub, Color cl)
+	{
+		mainWindow.showMessage(msg, sub, cl);
+		mainWindow.showSubGUI();
 	}
 
 	public void setMainToSub(String msg, String sub)

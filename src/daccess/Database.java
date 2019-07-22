@@ -37,16 +37,21 @@ public class Database {
        execute("CREATE TABLE IF NOT EXISTS accessLog (id integer PRIMARY KEY, accountId integer NOT NULL, time text);");
    }
    
-   public int createAccount(int badge, String fname, String lname, String password)
+   public int createAccount(int badge, String fname, String lname, String password, String NFC)
    {
 	   if (accountExist(badge))
 		   return 1;
 	   execute("INSERT INTO accounts (Badge, FirstName, LastName, isAdmin, Approved, Password, Pending, NFC) " +
 			   				" VALUES (%s ,\"%s\" ,\"%s\", \"%s\", \"%s\", \"%s\", \"%s\", \"%s\");" ,
 			   				new String[] {
-			   				Integer.toString(badge), fname, lname, "0" , "0", password, "0", ""
+			   				Integer.toString(badge), fname, lname, "0" , "0", password, "0", NFC
 			   				});
 	return 0;
+   }
+   
+   public int createAccount(Account ac)
+   {
+	   return createAccount(ac.getBadge(), ac.getFirstName(), ac.getLastName(), ac.getPassword(), ac.getNFC());
    }
   
    public boolean accountExist(int badge)
@@ -62,21 +67,18 @@ public class Database {
 
    public int verifyPassword(int badge, String pass)
    {
-	   ResultSet r = executeQ("Select Password From Accounts where badge = " + badge + " Limit 1;");
-	   try {
-		if (r.next())
-		{
-			String oPass = r.getString(1);
-			return (pass.equals(oPass) ? 0 : 1);
-		} else
-		{
-			return 2;
-		}
-	} catch (SQLException e) {
-		e.printStackTrace();
-		return 2;
+	   Account ac = getAccount(badge);
+	   if (ac == null)
+		   return 2;
+	   else
+	   {
+		   if (ac.getPassword().equals(pass))
+		   {
+			   return ac.getNFC().equals("") ? 3 : 0;
+		   }
+		   else return 1;
+	   }
 	}
-   }
    
    /*public void changeApproval(int badge, boolean approval)
    {
