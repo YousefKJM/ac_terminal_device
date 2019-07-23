@@ -20,6 +20,19 @@ public class Account {
 		return badge + " " + firstName + " " + isApproved + " " + isAdmin + " ";
 	}
 	
+	@Override
+	public boolean equals(Object obj)
+	{
+		try
+		{
+			Account ac =  (Account) obj;
+			return (ac.badge == badge);
+		} catch (Exception e)
+		{
+			return false;
+		}
+	}
+	
 	public boolean isPending() {
 		return pending;
 	}

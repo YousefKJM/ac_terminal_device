@@ -46,7 +46,6 @@ public class MQTT implements MqttCallback{
 		list.put("99999999999999999999999999999999", new User("Hammodi" , "99999999999999999999999999999999" , 0, false, 758837));
 		list.put("00021588888888888888888888888888", new User("Ahmed iPhone" , "00021588888888888888888888888888" , 0, false, 9999));
 		list.put("77777777777777777777777777777777", new User("Bolbol" , "77777777777777777777777777777777" , 0, false, 756585));
-		//list.put("55555555555555555555555555555555", new User("SmartYousef" , "55555555555555555555555555555555" , 0, false));
 
 		try 
 		{
@@ -79,7 +78,7 @@ public class MQTT implements MqttCallback{
 				    {
 				    	if (now - value.last > 10000)
 					    {
-					    	System.out.println("See you later " + value.user + " @ " + LocalDateTime.now());
+					    	manager.seamlessOut(value.badge);
 					    	value.around = false;
 					    }
 				    }
@@ -146,8 +145,7 @@ public class MQTT implements MqttCallback{
 			  {
 				  u.around = true;
 				  u.last = System.currentTimeMillis();
-				  System.out.println("Access granted! Welcome " + u.user + " @ " + LocalDateTime.now());
-				  manager.approveLogin(u.badge);
+				  manager.seamlessIn(u.badge);
 			  }
 		  }
 	  }

@@ -4,10 +4,18 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
+
+import com.pi4j.io.gpio.GpioController;
+import com.pi4j.io.gpio.GpioFactory;
+import com.pi4j.io.gpio.GpioPinDigitalOutput;
+import com.pi4j.io.gpio.PinState;
+import com.pi4j.io.gpio.RaspiPin;
 
 import daccess.gui.UserMngUI;
 
@@ -16,16 +24,19 @@ public class Manager implements ActionMessageInterface {
 	BTChip bt;
 	Database db;
 	TerminalMgr terminal;
-
+	GPIO gpio;
+	
 	int mode = 0;
 	
 	public static void main(String[] args) {
 		new Manager();
 	}
+
 	
 	public Manager()
 	{
-		terminal = new TerminalMgr(this); 
+		gpio = new GPIO(this);
+		terminal = new TerminalMgr(this);
 		terminal.showMainUI();
 		db = new Database();
 		bt = new BTChip(this);
@@ -38,7 +49,13 @@ public class Manager implements ActionMessageInterface {
 		db.updateAccount(ac);
 	}
 	
-	
+	public void confirmSeamless()
+	{
+		if (around.size() > 0)
+		{
+			approveLogin(around.get(around.size()-1));
+		}
+	}
 	
 	public void showPengingMgmt()
 	{
@@ -84,6 +101,7 @@ public class Manager implements ActionMessageInterface {
 	public void approveLogin(Account ac)
 	{
 		terminal.setMainToSub("Welcome!", ac.getFirstName() + " " + ac.getLastName(), new Color(0,50,0));
+		gpio.openDoor();
 		startTimer(4);
 	}
 	
@@ -91,6 +109,30 @@ public class Manager implements ActionMessageInterface {
 	{
 		terminal.setMainToSub("Access Denied!", null, new Color(180,0,0));
 		startTimer(4);
+	}
+	
+	ArrayList<Account> around = new ArrayList<Account>();
+	public void seamlessIn(int badge)
+	{
+		Account ac = db.getAccount(badge);
+		if (ac != null)
+		{
+			around.add(ac);
+			System.out.println("Access granted! Welcome " + ac.getFirstName() + " @ " + LocalDateTime.now() + "\nWe have " + around.size() + " users around");
+			gpio.openDoor();
+		}
+	}
+	
+	public void seamlessOut(int badge)
+	{
+		Account ac = new Account(0, badge, "", "", false, false, "", false, "");
+		if (around.contains(ac))
+		{
+			around.remove(ac);
+			System.out.println("Good bye " + ac.getFirstName() + " @ " + LocalDateTime.now() + "\nWe have " + around.size() + " users around");
+		}
+		if (around.size() == 0)
+			startTimer(1);
 	}
 	
 	int seconds=-1;
@@ -107,6 +149,7 @@ public class Manager implements ActionMessageInterface {
 			}			
 		}
 		terminal.setMainToBasic();
+		gpio.closeDoor();
 		mode = 0;
 		seconds = -1;
 	}
@@ -115,9 +158,9 @@ public class Manager implements ActionMessageInterface {
 	{
 		if (this.seconds >= 0)
 		{
-			this.seconds = seconds;
+			this.seconds = Math.max(seconds, this.seconds);
 		} else {
-			this.seconds = seconds;
+			this.seconds = Math.max(seconds, this.seconds);
 			Thread th = new Thread() {
 			    public void run(){
 			        timeLoop();
